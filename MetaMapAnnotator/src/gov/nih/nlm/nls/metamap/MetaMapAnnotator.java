@@ -191,7 +191,6 @@ public class MetaMapAnnotator {
                 for (CSVRecord record : records) {
                     long recordNumber = record.getRecordNumber();
                     
-                    String postDetails = "This post is for Coronavirus. ";
                     String postLink = record.get(0);
                     String postHeading = record.get(1);
                     String postContent = record.get(3);
@@ -203,12 +202,10 @@ public class MetaMapAnnotator {
                     postReplies = stripNonASCII(postReplies);
                     
                     
-                    String addedContent = postDetails.concat(postHeading);
-                    addedContent = addedContent.concat(postContent);
-                    addedContent = addedContent.concat(postReplies);
+                    String addedContent = postContent.concat(postReplies);
 
                     System.out.println("----------------------------------------------------");
-                    triggerMetaMap(frontEnd, output, options, csvFilePrinter, recordNumber, addedContent,postLink);
+                    triggerMetaMap(frontEnd, output, options, csvFilePrinter, recordNumber, postHeading, addedContent,postLink);
                     System.out.println("----------------------------------------------------");
                     System.out.println("Record Number " +recordNumber+ " Parsing Completed");
                 }
@@ -248,7 +245,7 @@ public class MetaMapAnnotator {
      *
      * @throws Exception
      */
-    private static void triggerMetaMap(MetaMapAnnotator mmFrontEnd, PrintStream output,List<String> options, CSVPrinter csvFilePrinter, long recordNumber, String postContent,String postLink) throws Exception {
+    private static void triggerMetaMap(MetaMapAnnotator mmFrontEnd, PrintStream output,List<String> options, CSVPrinter csvFilePrinter, long recordNumber,  String postHeading, String postContent,String postLink) throws Exception {
 
         if (!"".equals(postContent)) {
             mmFrontEnd.process(csvFilePrinter, recordNumber, postContent, output, options,postLink);
