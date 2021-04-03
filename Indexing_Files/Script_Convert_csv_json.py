@@ -21,7 +21,8 @@ def csv_to_json(csvFilePath, jsonFilePath):
         jsonf.write(jsonString)
 
 
-files = [f for f in os.listdir('.') if os.path.isfile(f) and ("updated_cahmx.csv" in f or "updated_livescience.csv" in f or "updated_mayo.csv" in f or "updated_medhelp.csv" in f or "updated_patientinfo.csv" in f)]
+files = [f for f in os.listdir('.') if os.path.isfile(f) and ("final_scrapping_metamap_data_updated_cahmx.csv" in f or "final_scrapping_metamap_data_updated_livescience.csv" in f \
+    or "final_scrapping_metamap_data_updated_mayo.csv" in f or "final_scrapping_metamap_data_updated_medhelp.csv" in f or "final_scrapping_metamap_data_updated_patientinfo.csv" in f)]
 
 for file in files:        
 	csvFilePath = file

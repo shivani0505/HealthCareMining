@@ -3,9 +3,8 @@ import csv
 import json
 import pandas
 
-
-files = [f for f in os.listdir('.') if os.path.isfile(f) and ("cahmx.csv" in f or "livescience.csv" in f or "mayo.csv" in f or "medhelp.csv" in f or "patientinfo.csv" in f)]
-
+files = [f for f in os.listdir('.') if os.path.isfile(f) and ("metamap_data_updated_cahmx.csv" in f or "metamap_data_updated_livescience.csv" in f \
+	or "metamap_data_updated_mayo.csv" in f or "metamap_data_updated_medhelp.csv" in f or "metamap_data_updated_patientinfo.csv" in f)]
 
 with open('/Users/shivanipriya/Documents/GitHub/HealthCareMining/ScraperFiles/stage1_scrapping.json') as scraper_file:
 	scraper_data = json.load(scraper_file)
@@ -51,10 +50,9 @@ for file in files:
 
 	df3 = pandas.concat([df, new_df], axis=1)
 	df3 = df3.drop(["url"],axis =1)
-	filename ="updated_" + file
+	filename ="final_scrapping_" + file
 	df3.to_csv(filename,index=False)
 	del df3
 	del new_df
 	del df
-	#df3 = df3.drop(labels=["PostNumber","SymptomName","PostLink","Title","Author","Total_Replies","Total_Weight"],axis = 1)
 	
