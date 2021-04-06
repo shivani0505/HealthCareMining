@@ -5,7 +5,7 @@ import csv
 import os
 
 def getSymptomsPostWise(postsNum):
-	csvFile = '../MetaMapAnnotator/resources/MetamapResult.csv'
+	csvFile = '../sympgraph/MetamapUpdatedResult.csv'
 	postSymptoms = {}
 	symptoms = {}
 	reverseMapSymptoms = {}
@@ -78,9 +78,11 @@ def getEdgesSympGraph(symptomGraph, reverseMapSymptoms,weight):
 			des = reverseMapSymptoms[cols]
 			weights = listSymptomGraph[rows][cols]
 			# Draw Graph only Corona Virus Infections
-			if src == "C0206750" and weights >= weight:
+			if weights >= weight:
 				if des!= "C0018081":
-					listEdges.append([src, des, weights])
+					if des != "C0012634":
+						if des != "C0037088":
+							listEdges.append([src, des, weights])
 
 	return listEdges
 
@@ -126,8 +128,8 @@ if __name__ == '__main__':
 	postSymptoms, symptoms, reverseMapSymptoms = getSymptomsPostWise(60)
 	symptomMat = symptomMatrixPostWise(postSymptoms, symptoms)
 	symptomGraph = generateSympGraph(symptomMat, symptoms)
-	weight = 1
-	while weight <= 6 :
+	weight = 3
+	while weight <= 8 :
 		listEdges = getEdgesSympGraph(symptomGraph, reverseMapSymptoms,weight)
 		generateGraph(listEdges, symptoms)
 		weight = weight + 1
