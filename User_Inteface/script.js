@@ -11,10 +11,7 @@ searchInput.addEventListener('keyup', () => {
       results = suggestions.filter((item) => {
         return item.toLowerCase().includes(input.toLowerCase());
       });
-      /*results = results.map((item)=>{
-        // passing return data inside li tag
-        return item = '<li>'+ item +'</li>';
-    });*/
+      
     searchWrapper.classList.add("active"); //show autocomplete box
     }
     if(input.length==0){
