@@ -49,3 +49,4 @@ searchInput.addEventListener('keyup', () => {
     
     return searchWrapper.classList.remove("show");
 }
+

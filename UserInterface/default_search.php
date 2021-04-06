@@ -23,8 +23,22 @@
   		background-attachment: fixed;
 		color:black;
 		}
+		
+		.moreText {
+	display: none;
+  }
+  .text {
+	display:none;
+  }
+  .text.show-more {
+	display: inline;
+  }
+  .text.show-more .dots {
+	display: none;
+  }
+	
 	</style>
-	<form action="search.php" method="get">
+	<form action="default_search.php" method="get">
 		<div class="app-wrapper">
 			<header class="app-header">
 				<h2 style="text-align: center;">Semantic Web Mining - Healthcare Mining</h2>
@@ -34,7 +48,7 @@
 				<div class="wrapper">
 				<input type="text" value="<?php echo htmlspecialchars($_GET['query']); ?>" name="query" id="search" placeholder="Search COVID-19 related topics " autocomplete="off" required />
 					
-					<button class="btn submit" id="searchBtn">Advanced Search</button>
+					<button class="btn submit" id="searchBtn">Search</button>
 					<div class="results">
 					</div>
 					</div>
@@ -65,8 +79,8 @@ $weight_url="http://localhost:8983/solr/SympWeight2/select?q=Source:";
 $start=$page*10-10;
 $symp_array=[];
 $symp_array2=[];
-$contents = file_get_contents($weight_url.implode(",",$query_array).'&sort=Weight%20desc'.'&wt=php&rows=10&start='.$start.'');
-//$contents = file_get_contents($weight_url.$query.'&sort=Weight%20desc'.'&wt=php&rows=10&start='.$start.'');
+
+$contents = file_get_contents($weight_url.$query.'&wt=php&rows=10&start='.$start.'');
 
 eval("\$result = " . $contents . ";");
 $count = $result["response"]["numFound"];
@@ -83,7 +97,7 @@ for($i=0; $i<sizeof($result["response"]["docs"]) ; $i++){
 		if($key=='Destination' or $key=='Weight')
 		{
 			
-			//display($key,$value);
+			
 			if($key=='Destination')
 			{
 				if (in_array(strtolower(implode(" ",$value)), $symp_array))
@@ -98,7 +112,6 @@ for($i=0; $i<sizeof($result["response"]["docs"]) ; $i++){
 				else
 				{
 					array_push($symp_array,strtolower(implode(" ",$value)));
-					//display($key,$value);
 					$value=str_replace(" ","%20",$value);
 					array_push($symp_array2,strtolower(implode(" ",$value)));
 					
@@ -124,20 +137,19 @@ $i = 0;
 		{
 			
 			
-				echo "<input type='checkbox' id='checkBox' class='showh-more-item' name='result[]' value='$symp_array[$i]'checked> $symp_array[$i]";
-				echo "</br>";
-			
-			
-			
-			
+			echo "<input type='checkbox' class='show-more-item' name='result[]' value='$symp_array[$i]' /> $symp_array[$i]";
+			echo "</br>";
 		}
+		
+		
 		}
 		else {
 			while($i < count($symp_array)) 
 		{
 			
-				echo "<input type='checkbox' id='checkBox' class='showh-more-item' name='result[]' value='$symp_array[$i]'> $symp_array[$i]";
-				echo "</br>";
+			echo "<input type='checkbox' class='filter-section-wrapper' name='result[]' value='$symp_array[$i]' /> $symp_array[$i]";
+			echo "</br>";
+			
 			
 			$i++;
 		}
@@ -162,14 +174,14 @@ $i = 0;
 				array_push($query_array2,$result);
 				$result=str_replace(" ","%20",$result);
 				array_push($query_array,$result);
-				//echo '</br>'.$result.'<br>';
+				
 			}
 		}
 		
 
 //SYMPTOM AND LINK APACHE SOLR
 	}
-$contents2 = file_get_contents($core_url.implode(",",$query_array).'&sort=Total_Weight%20desc'.'&wt=php&rows=1000&start='.$start.'');
+$contents2 = file_get_contents($core_url.implode(",",$query_array).'&wt=php&rows=1000&start='.$start.'');
 eval("\$result2 = " . $contents2 . ";");
 $count2 = $result2["response"]["numFound"];
 
@@ -181,8 +193,9 @@ if($count2==0){
 if($count>1){
 
 echo '<main class="result-section">';
-echo '<h4><u>Search Results for</u> : ';echo implode(",",$query_array2);echo'</h4>';
+
 for($i=0; $i<sizeof($result2["response"]["docs"]) ; $i++){
+	//echo "=====Result[".($i+1+$start)."]======<br/>";
 	foreach($result2["response"]["docs"][$i] as $key=>$value){
 		
 		if($key=='Title')
@@ -193,8 +206,10 @@ for($i=0; $i<sizeof($result2["response"]["docs"]) ; $i++){
 		}
 		if($key=='Author')
 		{
+			
 			$temp=implode(" ",$value);
 			echo "<br><b>Author   :</b> $temp";
+			
 			
 		}
 	}
@@ -204,22 +219,19 @@ for($i=0; $i<sizeof($result2["response"]["docs"]) ; $i++){
 		
 		if($key=='BodyParts')
 		{
-
+			
 			$temp=implode(" ",$value);
 			echo "<br><b>BodyParts Affected by it</b>: $temp";
-			
 			
 		}
 		if($key=='PostLink')
 		{
-			
 			$temp=implode(" ",$value);
 			echo "<br><b>PostLink :</b> <a href='$temp' target='_blank'>$temp</a>";
 			
 		}
 		if($key=='Treatment')
 		{
-			
 			$temp=implode(" ",$value);
 			echo "<br><b>Related Treatments      :</b>: $temp";
 			
