@@ -1,5 +1,5 @@
 # HealthCareMining 
-The main objective of this project is to develop an informative website that converts the given unstructured data from user written **COVID-19** related posts that were scraped from various forums like ( [MedHelp.com](https://www.medhelp.org/forums/Coronavirus/show/2203), [Patient.info](https://patient.info/coronavirus-covid-19), [Mayoclinic.org](https://www.mayoclinic.org/) ) into properly structured data and developing a parameter based search interface to provide the relevant posts, symptoms and treatments (if any) based on the user's search.
+The main objective of this project is to develop an informative website that converts the given unstructured data from user written **COVID-19** related posts that were scraped from various forums like ( [MedHelp.com](https://www.medhelp.org/forums/Coronavirus/show/2203), [Patient.info](https://patient.info/coronavirus-covid-19), [Mayoclinic.org](https://www.mayoclinic.org/) ) into properly structured data and developing a parameter based search interface to provide the relevant posts, symptoms and treatments (if any) based on the user's search. 
 ### Problems
 * Unstructured Health-Related User Experience posts.
 * All the User Experience posts are spread across several forums
@@ -19,7 +19,7 @@ The majority of the user written posts
 * Patient.info
 * Mayoclinic.org
 * Livescience.com
-* Camh.ca
+* Camh.ca <br>
 We have used python's scrapy framework for web scraping.
 
 ### Unified Medical Language System
@@ -42,6 +42,12 @@ It has over one million bio-medical concepts from over 100 sourses.
 ➔ It used computational-linguistic and Natural Language Processing techniques.<br>
 ➔ Java Web API and Online Interactive Interface available.
 
+### Ontologies and indexing
+* Will create Symptom, Treatment and symp weight ontology cores in apache solr .
+* The output of metamap will be inserted into this solr database along with page rank weight column.
+* Related symptoms will be extracted based on the symp weights.
+* Related post links will be extracted based on tht page rank we have created using the algorithm mentioned in the project.
+* 
 ### SympGraph
 * A graph with symptoms as nodes and co-occurence relations between these symptoms as edges.
 * The symptoms from various posts/forums written by different patients are used to generate this graph.
@@ -55,3 +61,6 @@ It has over one million bio-medical concepts from over 100 sourses.
 * Sondhi, Parikshit, et al. "SympGraph: a framework for mining clinical notes through symptom relation graphs." Proceedings of the 18th ACM SIGKDD international conference on Knowledge discovery and data mining. 2012.
 * F. Wang. Healthcare Data Mining with Matrix Models. https:// astro.temple.edu/ tua87106/KDD16_tut_part1.pdf
 
+> :warning: This is a general readme file that gives a brief understanding of the work we have done in this project and explains the technical information to get an understaning of this project. If you want to install, execute instructions or get detailed understanding of the work we have done, please refer to repective readme files present in each module.
+> The scaraped data taken for the medical forums are stored in HealthCareMining/ScraperFiles/stage1_scrapping directory.
+> The structured medical data extracted using MetaMap are stored in HealthCareMining/MetaMapAnnotator/resources directory.
