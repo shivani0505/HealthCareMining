@@ -86,7 +86,7 @@
 			</nav>
 </header>
  
-<a href="http://localhost/old/symp.php "target='_blank'>Know More about sympgraphs</a>
+<a href="http://localhost/Healthcare/symp.php "target='_blank'>Know More about sympgraphs</a>
 
 	<script src="script.js"></script>
 	<script src="suggestions.js"></script>
