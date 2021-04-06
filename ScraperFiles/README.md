@@ -13,3 +13,5 @@
     <br>content(String),
     <br>sub_replies([String])
   <br>}
+# Screenshot:
+![image](https://user-images.githubusercontent.com/68100466/113780485-1f7e1a80-96e4-11eb-9388-878e52064c89.png)
