@@ -41,7 +41,7 @@ def getSymptomsPostWise(postsNum):
 	return postSymptoms, symptoms, reverseMapSymptoms
 
 def symptomMatrixPostWise(postSymptoms, symptoms):
-	symptomMat = []
+	symptomMatrix = []
 
 	for idPost, infoPost in postSymptoms.items():
 		symps = [0 for i in range(len(symptoms))]
@@ -50,16 +50,16 @@ def symptomMatrixPostWise(postSymptoms, symptoms):
 			indexSymptomMat = symptoms[idSymptom]["index"]
 			symps[indexSymptomMat] += 1
 
-		symptomMat.append(symps)
+		symptomMatrix.append(symps)
 
-	return symptomMat
+	return symptomMatrix
 
-def generateSympGraph(symptomMat, symptoms):
-	symptomMat = np.array(symptomMat)
+def generateSympGraph(symptomMatrix, symptoms):
+	symptomMatrix = np.array(symptomMatrix)
 	shapeSymptomGraph = (len(symptoms), len(symptoms))
 	symptomGraph = np.zeros(shapeSymptomGraph)
 
-	for syms in symptomMat:
+	for syms in symptomMatrix:
 		syms = np.matrix(syms)
 		symsGraph = np.matmul(syms.transpose(), syms)
 		symptomGraph += symsGraph
@@ -67,7 +67,7 @@ def generateSympGraph(symptomMat, symptoms):
 	print(symptomGraph.shape)
 	return symptomGraph
 
-def getEdgesSympGraph(symptomGraph, reverseMapSymptoms):
+def getEdgesSympGraph(symptomGraph, reverseMapSymptoms,weight):
 	listSymptomGraph = symptomGraph.tolist()
 	listEdges = []
 
@@ -77,9 +77,10 @@ def getEdgesSympGraph(symptomGraph, reverseMapSymptoms):
 			src = reverseMapSymptoms[rows]
 			des = reverseMapSymptoms[cols]
 			weights = listSymptomGraph[rows][cols]
-
-			if weights >= 7:
-				listEdges.append([src, des, weights])
+			# Draw Graph only Corona Virus Infections
+			if src == "C0206750" and weights >= weight:
+				if des!= "C0018081":
+					listEdges.append([src, des, weights])
 
 	return listEdges
 
@@ -93,14 +94,16 @@ def generateGraph(listEdges, symptoms):
 
 	option = {
 		"with_labels": True,
-		"node_color": "black",
-		"width": 1,
-		"node_size": 5
+		"node_color": "pink",
+		"width": 0.5,
+		"node_size": 40
 	}
 
 	ntx.draw_circular(graph, **option)
 	l, r = plt.xlim()
-	plt.xlim(l - 0.15, r + 0.1)
+	print(l)
+	print(r)
+	plt.xlim(l - 0.25, r + 0.1)
 	plt.show()
 
 def generateCSVSympGraph(listEdges):
@@ -109,18 +112,24 @@ def generateCSVSympGraph(listEdges):
 		writr.writerow(["Source", "Destination", "Weight"])
 		writr.writerows(listEdges)
 		writingFile.close()
+		
 
 if __name__ == '__main__':
 	postSymptoms, symptoms, reverseMapSymptoms = getSymptomsPostWise(None)
 	symptomMat = symptomMatrixPostWise(postSymptoms, symptoms)
 	symptomGraph = generateSympGraph(symptomMat, symptoms)
-	listEdges = getEdgesSympGraph(symptomGraph, reverseMapSymptoms)
+	weight = 1
+	listEdges = getEdgesSympGraph(symptomGraph, reverseMapSymptoms,weight)
 	generateCSVSympGraph(listEdges)
 	print("Generation and Saving to CSV - Successful")
 
 	postSymptoms, symptoms, reverseMapSymptoms = getSymptomsPostWise(60)
 	symptomMat = symptomMatrixPostWise(postSymptoms, symptoms)
 	symptomGraph = generateSympGraph(symptomMat, symptoms)
-	listEdges = getEdgesSympGraph(symptomGraph, reverseMapSymptoms)
-	generateGraph(listEdges, symptoms)
+	weight = 1
+	while weight <= 6 :
+		listEdges = getEdgesSympGraph(symptomGraph, reverseMapSymptoms,weight)
+		generateGraph(listEdges, symptoms)
+		weight = weight + 1
 	print("Visually Representing the Sympgraph - Successful")
+	
