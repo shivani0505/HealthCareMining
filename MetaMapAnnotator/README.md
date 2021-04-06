@@ -40,3 +40,6 @@ C:\Users\UserName\Desktop\SWM_project\MetaMapAnnotator java -jar dist/MetaMapAnn
 * The input will be picked up from the neighbouring scraper/data folder which mentioned in MetaMapAnnotatorConfig.properties file.
 * The output will be written to resources folder under MetMapAnnotator folder.
 
+# Screenshots:
+* Structured data:
+![image](https://user-images.githubusercontent.com/68100466/113760896-abd01380-96cb-11eb-88c1-337eb43ddf76.png)
